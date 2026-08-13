@@ -4,7 +4,7 @@
  */
 window.SITE = {
   profile: {
-    name: "Fortuna",
+    name: "吱吱",
     handle: "trainer01",
     title: "求职 · 机器人 / 嵌入式 / 控制方向",
     bio: "喜欢把强化学习算法搬到真机上跑通。当前目标：机器人软件 / 运动控制 / 感知相关岗位。",
@@ -15,7 +15,7 @@ window.SITE = {
     following: 18,
     repoCount: 12,
     stars: "128",
-    avatarLabel: "F",
+    avatarLabel: "吱",
     quote: "调试真机前先把表填对，再谈策略是否聪明。",
   },
 

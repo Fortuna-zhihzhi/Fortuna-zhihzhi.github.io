@@ -75,7 +75,7 @@
           <div class="banner-tools">
             <span class="star-chip">★ ${escapeHtml(String(p.stars))}</span>
             <span class="user-chip">
-              <span class="mini-avatar">${escapeHtml(p.avatarLabel || "F")}</span>
+              <span class="mini-avatar">${escapeHtml(p.avatarLabel || "吱")}</span>
               ${escapeHtml(p.handle)}
             </span>
           </div>
@@ -145,7 +145,7 @@
     if (right) {
       right.innerHTML = `
         <div class="panel profile-card alt">
-          <div class="avatar-xl">${escapeHtml(p.avatarLabel || "F")}</div>
+          <div class="avatar-xl">${escapeHtml(p.avatarLabel || "吱")}</div>
           <p class="name">${escapeHtml(p.name)}</p>
           <p class="handle">@${escapeHtml(p.handle)} · Trainer</p>
           <p class="bio">${escapeHtml(p.bio)}</p>

@@ -1,4 +1,4 @@
-# Fortuna 求职向像素博客
+# 吱吱 求职向像素博客
 
 纯 **HTML / CSS / JS** 静态站，视觉为像素 RPG + 三栏布局，托管在 GitHub Pages。
 
