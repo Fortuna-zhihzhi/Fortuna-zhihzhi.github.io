@@ -400,20 +400,41 @@ button:hover,
   gap: 0.35rem;
   margin: 0.5rem 0 0.75rem;
 }
-.stat-row div {
+.stat-row .social-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 0.4rem 0.2rem;
+  padding: 0.5rem 0.2rem 0.4rem;
   font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--ink-soft);
+  text-decoration: none;
+  min-height: 58px;
 }
-.stat-row strong {
-  display: block;
-  font-size: 0.95rem;
+.stat-row .social-tile:hover {
+  text-decoration: none;
+  border-color: var(--accent);
   color: var(--ink);
-  margin-bottom: 0.1rem;
+  background: var(--card);
+}
+.stat-row .social-tile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.stat-row .social-tile .brand-icon {
+  width: 26px;
+  height: 26px;
+}
+.social-logo--xhs {
+  color: #ff2442;
+}
+.social-logo--bili {
+  color: #00a1d6;
 }
 
 .activity {

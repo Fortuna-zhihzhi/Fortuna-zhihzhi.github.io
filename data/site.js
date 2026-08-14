@@ -10,6 +10,10 @@ window.SITE = {
     bio: "喜欢把强化学习算法搬到真机上跑通。当前目标：机器人软件 / 运动控制 / 感知相关岗位。",
     email: "your.email@example.com",
     github: "https://github.com/Fortuna-zhihzhi",
+    // 侧栏三枚社交 logo 的主页链接，请换成完整个人页 URL
+    xiaohongshu: "https://www.xiaohongshu.com/user/profile/",
+    bilibili: "https://space.bilibili.com/",
+    douyin: "https://www.douyin.com/user/",
     location: "China",
     followers: 42,
     following: 18,
