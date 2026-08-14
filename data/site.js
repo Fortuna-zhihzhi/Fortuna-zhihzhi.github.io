@@ -347,4 +347,14 @@ window.SITE = {
 
   /** 简易贡献热力图种子（0–4），52 周 × 7 天 */
   contributionSeed: 42,
+
+  /**
+   * 学习日志交流区：读写本仓库 GitHub Issue。
+   * 发表会打开带预填内容的「新建 Issue」页（需登录 GitHub）；
+   * 列表从公开 Issues API 读取 label 为 logs-discuss 的条目。
+   */
+  comments: {
+    repo: "Fortuna-zhihzhi/Fortuna-zhihzhi.github.io",
+    label: "logs-discuss",
+  },
 };

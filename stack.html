@@ -7,17 +7,27 @@
   <title>技术栈</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-title="技术栈" data-page="stack">
-  <header class="site-banner" id="site-banner"></header>
-  <nav class="site-nav" id="site-nav" aria-label="主导航"></nav>
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <header class="site-top">
+    <div class="site-top-inner">
+      <div class="site-banner" id="site-banner"></div>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="打开导航">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="主导航"></nav>
+    </div>
+  </header>
 
-  <div class="page-shell">
-    <aside id="side-left"></aside>
-    <main class="main-col" id="main-content"></main>
-    <aside id="side-right"></aside>
+  <div class="page-shell page-shell--job">
+    <aside class="identity-col" id="side-right"></aside>
+    <div class="content-col">
+      <aside class="repo-chips" id="side-left"></aside>
+      <main class="main-col" id="main-content"></main>
+    </div>
   </div>
 
   <footer class="site-footer" id="site-footer"></footer>
