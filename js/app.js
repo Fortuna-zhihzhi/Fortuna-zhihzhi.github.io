@@ -491,19 +491,128 @@
     const root = $("#main-content");
     if (!root) return;
     let tag = "all";
+    let digestTheme = "all";
+    let digestYear = "all";
+    let digestQuery = "";
     const tags = [
       "all",
       ...new Set((SITE.papers || []).flatMap((p) => p.tags || [])),
     ];
+    const digest = window.PAPER_DIGEST_20261017 || {
+      title: "20261017论文整理",
+      summary: "",
+      themes: [{ id: "all", label: "全部" }],
+      themeLabels: {},
+      papers: [],
+    };
+
+    function digestMatches(paper) {
+      if (digestTheme !== "all" && paper.theme !== digestTheme) return false;
+      if (digestYear !== "all" && String(paper.year) !== digestYear) return false;
+      const q = digestQuery.trim().toLowerCase();
+      if (!q) return true;
+      const themeName = (digest.themeLabels || {})[paper.theme] || "";
+      return [paper.title, paper.object, paper.data, paper.method, paper.problem, themeName, paper.year]
+        .join(" ")
+        .toLowerCase()
+        .includes(q);
+    }
+
+    function digestRows() {
+      const rows = (digest.papers || []).filter(digestMatches);
+      if (!rows.length) {
+        return `<tr><td class="digest-empty" colspan="6">没有匹配的论文</td></tr>`;
+      }
+      return rows
+        .map((paper) => {
+          const volume = paper.year === 2025 ? "v267" : "v306";
+          const href = `https://proceedings.mlr.press/${volume}/${paper.id}.html`;
+          const themeName = (digest.themeLabels || {})[paper.theme] || paper.theme;
+          return `
+            <tr>
+              <td><a href="${escapeAttr(href)}" target="_blank" rel="noopener">${escapeHtml(
+                paper.title
+              )}</a><div class="digest-year">${escapeHtml(String(paper.year))}</div></td>
+              <td>${escapeHtml(themeName)}</td>
+              <td>${escapeHtml(paper.object)}</td>
+              <td>${escapeHtml(paper.data)}</td>
+              <td>${escapeHtml(paper.method)}</td>
+              <td>${escapeHtml(paper.problem)}</td>
+            </tr>`;
+        })
+        .join("");
+    }
+
+    function syncDigest() {
+      const body = $("#digest-body", root);
+      const count = $("#digest-count", root);
+      const matched = (digest.papers || []).filter(digestMatches);
+      if (body) body.innerHTML = digestRows();
+      if (count) count.textContent = `${matched.length} / ${(digest.papers || []).length}`;
+      $$("[data-dtheme]", root).forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.dtheme === digestTheme);
+      });
+      $$("[data-dyear]", root).forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.dyear === digestYear);
+      });
+    }
 
     function paint() {
       const list = (SITE.papers || []).filter(
         (p) => tag === "all" || (p.tags || []).includes(tag)
       );
+      const years = ["all", ...new Set((digest.papers || []).map((p) => String(p.year)))];
       root.innerHTML = `
         <section class="page-intro">
           <h2>论文阅读区域</h2>
           <p>记录精读 / 略读结论。建议与「项目日志」交叉链接，体现学以致用。</p>
+        </section>
+        <section class="panel digest-module" id="digest-20261017">
+          <div class="section-head">
+            <h3>${escapeHtml(digest.title || "20261017论文整理")}</h3>
+            <span class="digest-count" id="digest-count"></span>
+          </div>
+          <p class="digest-summary">${escapeHtml(digest.summary || "")}</p>
+          <div class="digest-filters">
+            ${(digest.themes || [])
+              .map(
+                (item) =>
+                  `<button type="button" class="chip-btn ${
+                    item.id === digestTheme ? "active" : ""
+                  }" data-dtheme="${escapeAttr(item.id)}">${escapeHtml(item.label)}</button>`
+              )
+              .join("")}
+          </div>
+          <div class="digest-tools">
+            <div class="digest-filters">
+              ${years
+                .map(
+                  (y) =>
+                    `<button type="button" class="chip-btn ${
+                      y === digestYear ? "active" : ""
+                    }" data-dyear="${escapeAttr(y)}">${escapeHtml(y === "all" ? "两年" : y)}</button>`
+                )
+                .join("")}
+            </div>
+            <input id="digest-q" class="digest-search" type="search" placeholder="搜索标题、数据或方法" value="${escapeAttr(
+              digestQuery
+            )}" />
+          </div>
+          <div class="digest-table-wrap">
+            <table class="digest-table">
+              <thead>
+                <tr>
+                  <th>论文</th>
+                  <th>主题</th>
+                  <th>对象</th>
+                  <th>数据集</th>
+                  <th>核心方法</th>
+                  <th>目标问题</th>
+                </tr>
+              </thead>
+              <tbody id="digest-body"></tbody>
+            </table>
+          </div>
         </section>
         <div class="filter-bar">
           ${tags
@@ -544,12 +653,32 @@
           })
           .join("")}`;
 
-      $$(".chip-btn", root).forEach((btn) => {
+      $$("[data-t]", root).forEach((btn) => {
         btn.addEventListener("click", () => {
           tag = btn.dataset.t;
           paint();
         });
       });
+      $$("[data-dtheme]", root).forEach((btn) => {
+        btn.addEventListener("click", () => {
+          digestTheme = btn.dataset.dtheme;
+          syncDigest();
+        });
+      });
+      $$("[data-dyear]", root).forEach((btn) => {
+        btn.addEventListener("click", () => {
+          digestYear = btn.dataset.dyear;
+          syncDigest();
+        });
+      });
+      const search = $("#digest-q", root);
+      if (search) {
+        search.addEventListener("input", () => {
+          digestQuery = search.value;
+          syncDigest();
+        });
+      }
+      syncDigest();
     }
     paint();
   }
