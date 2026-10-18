@@ -498,6 +498,8 @@
       "all",
       ...new Set((SITE.papers || []).flatMap((p) => p.tags || [])),
     ];
+    const digestHost = $("#digest-20261017", root);
+    const notes = $("#paper-notes", root);
     const digest = window.PAPER_DIGEST_20261017 || {
       title: "20261017论文整理",
       summary: "",
@@ -557,10 +559,85 @@
       });
     }
 
+    function bindDigest(scope) {
+      $$("[data-dtheme]", scope).forEach((btn) => {
+        btn.addEventListener("click", () => {
+          digestTheme = btn.dataset.dtheme;
+          syncDigest();
+        });
+      });
+      $$("[data-dyear]", scope).forEach((btn) => {
+        btn.addEventListener("click", () => {
+          digestYear = btn.dataset.dyear;
+          syncDigest();
+        });
+      });
+      const search = $("#digest-q", scope);
+      if (search) {
+        search.addEventListener("input", () => {
+          digestQuery = search.value;
+          syncDigest();
+        });
+      }
+      syncDigest();
+    }
+
+    function notesMarkup(list) {
+      return `
+        <div class="filter-bar">
+          ${tags
+            .map(
+              (t) =>
+                `<button type="button" class="chip-btn ${
+                  t === tag ? "active" : ""
+                }" data-t="${escapeAttr(t)}">${escapeHtml(t)}</button>`
+            )
+            .join("")}
+        </div>
+        ${list
+          .map((p) => {
+            const stars = "★".repeat(p.rating || 0) + "☆".repeat(5 - (p.rating || 0));
+            return `
+            <article class="paper-card" id="${escapeAttr(p.id)}">
+              <h4>${escapeHtml(p.title)}</h4>
+              <div class="meta">${escapeHtml(p.authors)} · ${escapeHtml(
+              p.venue
+            )} · ${escapeHtml(String(p.year))} · <span class="badge">${escapeHtml(
+              p.status
+            )}</span>
+              · <span class="stars-rating">${stars}</span>
+              </div>
+              <div class="tags">${(p.tags || [])
+                .map((t) => `<span class="tag">${escapeHtml(t)}</span>`)
+                .join("")}</div>
+              <ul class="hl">${(p.takeaways || [])
+                .map((t) => `<li>${escapeHtml(t)}</li>`)
+                .join("")}</ul>
+              <p style="margin:0.5rem 0 0;color:var(--ink-soft)">${escapeHtml(p.notes || "")}</p>
+              ${
+                p.link
+                  ? `<p style="margin:0.5rem 0 0"><a href="${p.link}" target="_blank" rel="noopener">阅读链接</a></p>`
+                  : ""
+              }
+            </article>`;
+          })
+          .join("")}`;
+    }
+
     function paint() {
       const list = (SITE.papers || []).filter(
         (p) => tag === "all" || (p.tags || []).includes(tag)
       );
+      if (digestHost && notes) {
+        notes.innerHTML = notesMarkup(list);
+        $$("[data-t]", notes).forEach((btn) => {
+          btn.addEventListener("click", () => {
+            tag = btn.dataset.t;
+            paint();
+          });
+        });
+        return;
+      }
       const years = ["all", ...new Set((digest.papers || []).map((p) => String(p.year)))];
       root.innerHTML = `
         <section class="page-intro">
@@ -659,27 +736,9 @@
           paint();
         });
       });
-      $$("[data-dtheme]", root).forEach((btn) => {
-        btn.addEventListener("click", () => {
-          digestTheme = btn.dataset.dtheme;
-          syncDigest();
-        });
-      });
-      $$("[data-dyear]", root).forEach((btn) => {
-        btn.addEventListener("click", () => {
-          digestYear = btn.dataset.dyear;
-          syncDigest();
-        });
-      });
-      const search = $("#digest-q", root);
-      if (search) {
-        search.addEventListener("input", () => {
-          digestQuery = search.value;
-          syncDigest();
-        });
-      }
-      syncDigest();
+      bindDigest(root);
     }
+    if (digestHost) bindDigest(digestHost);
     paint();
   }
 

@@ -26,7 +26,51 @@
     <aside class="identity-col" id="side-right"></aside>
     <div class="content-col">
       <aside class="repo-chips" id="side-left"></aside>
-      <main class="main-col" id="main-content"></main>
+      <main class="main-col" id="main-content">
+        <section class="page-intro">
+          <h2>论文阅读区域</h2>
+          <p>记录精读 / 略读结论。建议与「项目日志」交叉链接，体现学以致用。</p>
+        </section>
+        <section class="panel digest-module" id="digest-20261017">
+          <div class="section-head">
+            <h3>20261017论文整理</h3>
+            <span class="digest-count" id="digest-count"></span>
+          </div>
+          <p class="digest-summary">ICML 2025 / 2026 中与长程任务、Agentic RL 相关的筛选表。可按研究主题、年份和关键词筛选。</p>
+          <div class="digest-filters" id="digest-themes">
+            <button type="button" class="chip-btn active" data-dtheme="all">全部</button>
+            <button type="button" class="chip-btn" data-dtheme="setting">任务与环境</button>
+            <button type="button" class="chip-btn" data-dtheme="joint">规划·搜索·记忆·工具</button>
+            <button type="button" class="chip-btn" data-dtheme="reward">RLVR / GRPO / PPO</button>
+            <button type="button" class="chip-btn" data-dtheme="credit">信用分配与方差</button>
+            <button type="button" class="chip-btn" data-dtheme="collapse">投机、坍塌与博弈</button>
+          </div>
+          <div class="digest-tools">
+            <div class="digest-filters" id="digest-years">
+              <button type="button" class="chip-btn active" data-dyear="all">两年</button>
+              <button type="button" class="chip-btn" data-dyear="2025">2025</button>
+              <button type="button" class="chip-btn" data-dyear="2026">2026</button>
+            </div>
+            <input id="digest-q" class="digest-search" type="search" placeholder="搜索标题、数据或方法" />
+          </div>
+          <div class="digest-table-wrap">
+            <table class="digest-table">
+              <thead>
+                <tr>
+                  <th>论文</th>
+                  <th>主题</th>
+                  <th>对象</th>
+                  <th>数据集</th>
+                  <th>核心方法</th>
+                  <th>目标问题</th>
+                </tr>
+              </thead>
+              <tbody id="digest-body"></tbody>
+            </table>
+          </div>
+        </section>
+        <div id="paper-notes"></div>
+      </main>
     </div>
   </div>
 
